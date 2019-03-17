@@ -1,0 +1,12 @@
+replicaCount: 0
+
+image:
+  repository: local/demo
+  tag: 0.0.1-SNAPSHOT
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  host: jug.nsk.ru
