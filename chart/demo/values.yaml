@@ -1,12 +1,23 @@
 replicaCount: 0
-
+#
+resourceLimits:
+  small:
+    memory: "64Mi"
+    cpu: "200m"
+  medium:
+    memory: "128Mi"
+    cpu: "350m"
+  large:
+    memory: "256Mi"
+    cpu: "500m"
+#
 image:
-  repository: local/demo
+  repository: mityi/sample-spring-hz-k8s
   tag: 0.0.1-SNAPSHOT
-
+#
 service:
   type: ClusterIP
   port: 8080
-
+#
 ingress:
   host: jug.nsk.ru

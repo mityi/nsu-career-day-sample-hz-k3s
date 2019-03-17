@@ -14,21 +14,29 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @SpringBootApplication
 public class DemoApplication {
 
-	@Bean
-	public RouterFunction<ServerResponse> route(GreetingHandler greetingHandler) {
+    @Bean
+    public RouterFunction<ServerResponse> route(RandomizerHandler greetingHandler) {
+        return RouterFunctions
+                .route(RequestPredicates.GET("/all")
+                        .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::getAll)
+                .and(RouterFunctions
+                        .route(RequestPredicates.GET("/status")
+                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::getStatus))
+                .and(RouterFunctions
+                        .route(RequestPredicates.GET("/add/{hash}")
+                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::put))
+                .and(RouterFunctions
+                        .route(RequestPredicates.GET("/winner")
+                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::winner));
+    }
 
-		return RouterFunctions
-				.route(RequestPredicates.GET("/hello")
-						.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::hello);
-	}
+    @Bean
+    public HazelcastInstance hz() {
+        return Hazelcast.newHazelcastInstance();
+    }
 
-	@Bean
-	public HazelcastInstance hz() {
-		return Hazelcast.newHazelcastInstance();
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
 }

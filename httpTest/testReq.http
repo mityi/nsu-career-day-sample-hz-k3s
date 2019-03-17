@@ -1,0 +1,13 @@
+###
+GET jug.nsk.ru/all
+
+###
+GET jug.nsk.ru/status
+
+###
+GET jug.nsk.ru/winner
+
+###
+GET  jug.nsk.ru/add/myTestHash
+
+###

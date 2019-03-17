@@ -52,7 +52,7 @@
 				<version>1.4.10</version>
 				<configuration>
 					<dockerfile>docker/Dockerfile</dockerfile>
-					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<repository>docker.io/mityi/sample-spring-hz-k8s</repository>
 					<tag>${project.version}</tag>
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>

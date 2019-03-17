@@ -1,0 +1,13 @@
+###
+GET localhost:8080/all
+
+###
+GET localhost:8080/status
+
+###
+GET localhost:8080/winner
+
+###
+GET  localhost:8080/add/testHASH
+
+###
