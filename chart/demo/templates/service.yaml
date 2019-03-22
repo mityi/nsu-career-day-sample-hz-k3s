@@ -10,3 +10,8 @@ spec:
     - protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
+      name: restport
+    - protocol: TCP
+      port: 5701
+      targetPort: hazelcast
+      name: hzport

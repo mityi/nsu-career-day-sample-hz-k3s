@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.11.xsd"
+           xmlns="http://www.hazelcast.com/schema/config"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <properties>
+        <property name="hazelcast.discovery.enabled">true</property>
+    </properties>
+    <network>
+        <join>
+            <multicast enabled="false"/>
+            <tcp-ip enabled="false"/>
+            <discovery-strategies>
+                <discovery-strategy enabled="true"
+                                    class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+                    <properties>
+                        <property name="service-name">demo-server</property>
+                        <property name="namespace">default</property>
+                    </properties>
+                </discovery-strategy>
+            </discovery-strategies>
+        </join>
+    </network>
+    <map name="default">
+        <backup-count>3</backup-count>
+        <read-backup-data>true</read-backup-data>
+    </map>
+    <queue name="default">
+        <backup-count>3</backup-count>
+    </queue>
+    <set name="default">
+        <backup-count>3</backup-count>
+    </set>
+    <multimap name="default">
+        <backup-count>3</backup-count>
+    </multimap>
+    <list name="default">
+        <backup-count>3</backup-count>
+    </list>
+    <ringbuffer name="default">
+        <backup-count>3</backup-count>
+    </ringbuffer>
+</hazelcast>

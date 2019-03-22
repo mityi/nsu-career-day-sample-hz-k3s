@@ -1,42 +1,30 @@
 package ru.te.demo;
 
+import com.hazelcast.config.Config;
+import com.hazelcast.config.DiscoveryConfig;
+import com.hazelcast.config.JoinConfig;
+import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
 
-@SpringBootApplication
+import static spark.Spark.get;
+import static spark.Spark.port;
+
 public class DemoApplication {
 
-    @Bean
-    public RouterFunction<ServerResponse> route(RandomizerHandler greetingHandler) {
-        return RouterFunctions
-                .route(RequestPredicates.GET("/all")
-                        .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::getAll)
-                .and(RouterFunctions
-                        .route(RequestPredicates.GET("/status")
-                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::getStatus))
-                .and(RouterFunctions
-                        .route(RequestPredicates.GET("/add/{hash}")
-                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::put))
-                .and(RouterFunctions
-                        .route(RequestPredicates.GET("/winner")
-                                .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), greetingHandler::winner));
-    }
-
-    @Bean
-    public HazelcastInstance hz() {
-        return Hazelcast.newHazelcastInstance();
-    }
+    private static HazelcastInstance hz = Hazelcast.newHazelcastInstance();
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        RandomizerService service = new RandomizerService(hz);
+        port(8080);
+        get("/all", (req, res) -> service.getAll());
+        get("/status", (req, res) -> service.getStatus());
+        get("/add/:hash", (req, res) -> {
+            String hash = req.params("hash");
+            long result = service.put(hash);
+            return String.valueOf(result);
+        });
+        get("/winner", (req, res) -> service.winner());
     }
 
 }

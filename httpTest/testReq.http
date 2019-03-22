@@ -1,13 +1,13 @@
 ###
-GET jug.nsk.ru/all
+GET 192.168.154.221:30549/all
 
 ###
-GET jug.nsk.ru/status
+GET 192.168.154.221:30549/status
 
 ###
-GET jug.nsk.ru/winner
+GET 192.168.154.221:30549/winner
 
 ###
-GET  jug.nsk.ru/add/myTestHash
+GET  192.168.154.221:30549/add/masdfyTeadsdsstHadsasdfdaffsh
 
 ###
