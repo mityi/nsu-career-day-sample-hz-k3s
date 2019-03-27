@@ -11,12 +11,18 @@ resourceLimits:
     memory: "256Mi"
     cpu: "500m"
 #
+statefulset:
+  name: demo
 image:
-  repository: mityi/sample-spring-hz-k8s
-  tag: 0.0.1-SNAPSHOT
+  repository: mityi/sample-hz-arm
+  tag: 0.0.3
 #
 service:
-  type: ClusterIP
+  name:
+    hz: hz-service-name
+    rest: demo-server
+  type:
+    lb: LoadBalancer
   port: 8080
 #
 ingress:

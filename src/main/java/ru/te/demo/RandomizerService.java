@@ -1,56 +1,27 @@
 package ru.te.demo;
 
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IAtomicLong;
-import com.hazelcast.core.IMap;
-import com.hazelcast.monitor.LocalMapStats;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
-import java.util.Random;
+public interface RandomizerService {
 
-public class RandomizerService {
+    One put(String hash);
 
-    private static final Logger logger = LoggerFactory.getLogger(RandomizerService.class);
+    One winner();
 
-    private final IMap<Long, String> map;
-    private final IAtomicLong nextId;
+    Data getAll();
 
-    public RandomizerService(HazelcastInstance hz) {
-        this.map = hz.getMap("grid-db");
-        this.nextId = hz.getAtomicLong("grid-db-Id");
+    Status getStatus();
+
+    class Status {
+        public long owner;
+        public long backup;
     }
 
-    public long put(String hash) {
-        logger.info("put:"+hash);
-        long key = nextId.getAndIncrement();
-        map.put(key, hash);
-        return key;
+    class Data {
+        public List<String> hashes;
     }
 
-    public String winner() {
-        logger.info("try to find winner");
-        int size = map.size();
-        int result;
-        if (size == 0) {
-            return "NONE";
-        } else {
-            int i = new Random().nextInt(size);
-            return map.get((long) i);
-        }
-    }
-
-    public String getAll() {
-        logger.info("get all data ...");
-        StringBuffer allData = new StringBuffer();
-        map.forEach((k, v) -> allData.append("k:v -> ").append(k).append(":").append(v).append("\n"));
-        return allData.toString();
-    }
-
-    public String getStatus() {
-        logger.info("status is ...");
-        LocalMapStats localMapStats = map.getLocalMapStats();
-        return "owner: " + localMapStats.getOwnedEntryCount() + " \n"
-                + "backup: " + localMapStats.getBackupEntryCount();
+    class One {
+        public String hash;
     }
 }

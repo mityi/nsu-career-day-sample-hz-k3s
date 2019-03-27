@@ -1,20 +1,29 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: demo
+  name: {{ .Values.statefulset.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  serviceName: {{ .Values.service.name.rest }}
   selector:
     matchLabels:
+      hz: hz-tag
       app: demo-tag
   template:
     metadata:
       labels:
         app: demo-tag
+        hz: hz-tag
     spec:
       containers:
         - name: demo-service
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          volumeMounts:
+            - name: hazelcast-storage
+              mountPath: /data/hazelcast
+          env:
+            - name: JAVA_OPTS
+              value: "-Dhazelcast.rest.enabled=true  -Dhazelcast.config=/data/hazelcast/hazelcast.xml"
           resources:
             requests:
               memory: {{ .Values.resourceLimits.small.memory }}
@@ -22,3 +31,7 @@ spec:
             limits:
               memory: {{ .Values.resourceLimits.large.memory }}
               cpu: {{ .Values.resourceLimits.large.cpu }}
+      volumes:
+        - name: hazelcast-storage
+          configMap:
+            name: hazelcast-configuration

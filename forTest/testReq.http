@@ -1,0 +1,13 @@
+###
+GET 192.168.154.220:32229/all
+
+###
+GET 192.168.154.221:32221/status
+
+###
+GET 192.168.154.222:32229/winner
+
+###
+GET  192.168.154.224:32229/add/masdfyTeadsdsstHadsasdfdaffsh
+
+###

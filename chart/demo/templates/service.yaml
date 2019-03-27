@@ -1,17 +1,51 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: demo-server
+  name: {{ .Values.service.name.rest }}
+  labels:
+    app: demo-tag
 spec:
   selector:
     app: demo-tag
-  type: {{ .Values.service.type }}
+  type: NodePort
   ports:
     - protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
+      nodePort: 32229
       name: restport
-    - protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.service.name.hz }}
+  labels:
+    hz: hz-tag
+spec:
+  type: {{ .Values.service.type.lb }}
+  selector:
+    hz: hz-tag
+  ports:
+    - name: hazelcast
       port: 5701
-      targetPort: hazelcast
-      name: hzport
+
+{{ range $i, $e := until ($.Values.replicaCount | int) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.service.name.rest }}-{{$i}}
+  labels:
+    app: demo-tag
+spec:
+  type: NodePort
+  selector:
+    app: demo-tag
+    statefulset.kubernetes.io/pod-name: {{ $.Values.statefulset.name }}-{{$i}}
+  ports:
+    - protocol: TCP
+      port: {{ $.Values.service.port }}
+      targetPort: {{ $.Values.service.port }}
+      nodePort: 3222{{$i}}
+      name: restport
+{{ end }}

@@ -1,0 +1,19 @@
+###
+GET localhost:8080/all
+#result: {"hashes":[]}
+#result: {"hashes":["testHASH"]}
+#
+###
+GET localhost:8080/status
+#result: {"owner":0,"backup":0}
+#result: {"owner":7,"backup":6}
+#
+###
+GET localhost:8080/winner
+#result: {"hash":"Nil"}
+#result: {"hash":"testHASH"}
+###
+GET  localhost:8080/add/testHASH
+#result: {"hash":"testHASH"}
+#
+###
