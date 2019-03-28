@@ -6,7 +6,7 @@ GET localhost:8080/all
 ###
 GET localhost:8080/status
 #result: {"owner":0,"backup":0}
-#result: {"owner":7,"backup":6}
+#result: {"owner":7,"backup":0}
 #
 ###
 GET localhost:8080/winner

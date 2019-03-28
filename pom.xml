@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.te</groupId>
     <artifactId>demo</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.1</version>
     <name>demo</name>
     <description>App with hazelcast on java 8 to start in k3s on raspberry pi</description>
 
@@ -37,18 +37,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.4</version>
-        </dependency>
-        <!--endregion-->
-        <!--region hz-->
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
-            <version>3.11.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-kubernetes</artifactId>
-            <version>1.4</version>
         </dependency>
         <!--endregion-->
     </dependencies>
@@ -95,10 +83,6 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                    </transformers>
                 </configuration>
                 <executions>
                     <execution>

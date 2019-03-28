@@ -14,21 +14,6 @@ spec:
       targetPort: {{ .Values.service.port }}
       nodePort: 32229
       name: restport
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ .Values.service.name.hz }}
-  labels:
-    hz: hz-tag
-spec:
-  type: {{ .Values.service.type.lb }}
-  selector:
-    hz: hz-tag
-  ports:
-    - name: hazelcast
-      port: 5701
-
 {{ range $i, $e := until ($.Values.replicaCount | int) }}
 ---
 apiVersion: v1

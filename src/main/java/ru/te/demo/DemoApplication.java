@@ -1,20 +1,21 @@
 package ru.te.demo;
 
 import com.google.gson.Gson;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
 import ru.te.demo.impl.RandomizerServiceImpl;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
 
 public class DemoApplication {
 
-    private static HazelcastInstance hz = Hazelcast.newHazelcastInstance();
+    private static Set<String> hashes = new HashSet<>();
 
     public static void main(String[] args) {
         port(8080);
-        RandomizerService service = new RandomizerServiceImpl(hz);
+        RandomizerService service = new RandomizerServiceImpl(hashes);
         Gson gson = new Gson();
 
         get("/all", "application/json",
