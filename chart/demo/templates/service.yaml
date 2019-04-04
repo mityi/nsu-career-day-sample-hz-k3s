@@ -5,6 +5,9 @@ metadata:
   labels:
     app: demo-tag
 spec:
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 1
   selector:
     app: demo-tag
   type: NodePort

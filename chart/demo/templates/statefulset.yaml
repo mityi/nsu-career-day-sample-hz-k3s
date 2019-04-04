@@ -18,6 +18,22 @@ spec:
       containers:
         - name: demo-service
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 5
           volumeMounts:
             - name: hazelcast-storage
               mountPath: /data/hazelcast

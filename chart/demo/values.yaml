@@ -26,4 +26,4 @@ service:
   port: 8080
 #
 ingress:
-  host: jug.nsk.ru
+  host: te.nsk.ru
